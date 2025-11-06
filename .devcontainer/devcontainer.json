@@ -1,11 +1,8 @@
 {
-    "name": "Claude Dev Workspace",
+    "name": "Claude Code DevContainer Workspace",
     "image": "mcr.microsoft.com/devcontainers/base:debian",
     "remoteUser": "vscode",
     "features": {
-        "ghcr.io/devcontainers/features/rust:1": {
-            "version": "1.70"
-        },
         "ghcr.io/devcontainers/features/docker-in-docker:2": {
             "moby": false
         },
@@ -22,7 +19,8 @@
     "customizations": {
         "vscode": {
             "extensions": [
-                "rooveterinaryinc.roo-cline",
+				"bierner.markdown-mermaid",
+				"shd101wyy.markdown-preview-enhanced",
                 "vsls-contrib.gistfs",
                 "github.copilot",
                 "github.copilot-chat"
@@ -40,5 +38,6 @@
                 "terminal.integrated.defaultProfile.linux": "tmux-workspace"
             }
         }
-    }
+    },
+    "shutdownAction": "none"
 }

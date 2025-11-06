@@ -51,7 +51,10 @@ uv tool install claude-monitor || pip install claude-monitor
 # Install Agentic-qe
 npm install -g agentic-qe
 
-# Install Agenetic Flow
+# Install Clauden Flow
+npm install -g claude-flow@alpha
+
+# Install Agentic Flow
 npm install -g agentic-flow
 
 # Install Direnv
