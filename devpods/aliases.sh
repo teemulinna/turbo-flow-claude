@@ -8,14 +8,19 @@
 # Performance: 100-600x speedup with SDK integration
 # ============================================
 
+# === Convenience Aliases (Shell) ===
+alias ll="ls -al"
+alias lt="ls -ltra"
+
 # === Core Context Wrapper Commands ===
 alias cf="./cf-with-context.sh"
-alias cf-swarm="./cf-with-context.sh swarm" 
+alias cf-swarm="./cf-with-context.sh swarm"
 alias cf-hive="./cf-with-context.sh hive-mind spawn"
 
 # === Claude Code Direct Access ===
 alias cf-dsp="claude --dangerously-skip-permissions"
 alias dsp="claude --dangerously-skip-permissions"
+alias dspc="claude -c --dangerously-skip-permissions"
 
 # === Initialization & Setup ===
 alias cf-init="npx claude-flow@alpha init --force"

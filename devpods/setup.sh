@@ -320,6 +320,39 @@ fi
 echo 'alias dsp="claude --dangerously-skip-permissions"' >> ~/.bashrc
 
 # ============================================
+# ADD CONVENIENCE ALIASES TO ~/.zshrc
+# ============================================
+
+echo ""
+echo "📝 Adding convenience aliases to ~/.zshrc..."
+
+# Create ~/.zshrc if it doesn't exist
+touch ~/.zshrc
+
+# Check if aliases already exist and add them if they don't
+if ! grep -q "alias ll=" ~/.zshrc 2>/dev/null; then
+    echo 'alias ll="ls -al"' >> ~/.zshrc
+    echo "✅ Added 'll' alias to ~/.zshrc"
+fi
+
+if ! grep -q "alias lt=" ~/.zshrc 2>/dev/null; then
+    echo 'alias lt="ls -ltra"' >> ~/.zshrc
+    echo "✅ Added 'lt' alias to ~/.zshrc"
+fi
+
+if ! grep -q 'alias dsp="claude --dangerously-skip-permissions"' ~/.zshrc 2>/dev/null; then
+    echo 'alias dsp="claude --dangerously-skip-permissions"' >> ~/.zshrc
+    echo "✅ Added 'dsp' alias to ~/.zshrc"
+fi
+
+if ! grep -q 'alias dspc="claude -c --dangerously-skip-permissions"' ~/.zshrc 2>/dev/null; then
+    echo 'alias dspc="claude -c --dangerously-skip-permissions"' >> ~/.zshrc
+    echo "✅ Added 'dspc' alias to ~/.zshrc"
+fi
+
+echo "✅ Convenience aliases added to ~/.zshrc"
+
+# ============================================
 # AGENTIC-FLOW INSTALLATION & CONFIGURATION
 # Multi-Model Router with OpenRouter, Gemini & ONNX
 # ============================================
