@@ -9,6 +9,8 @@
 /CLAUDE.md
 /memory/
 /coordination/
+/.claude-flow/
+/.swarm/
 
 # Keep the claude.md configuration
 !/claude.md
