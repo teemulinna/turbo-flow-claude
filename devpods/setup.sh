@@ -80,20 +80,15 @@ fi
 
 echo "🔌 Installing MCP Servers..."
 
-# Install Playwright MCP Server (Official Microsoft implementation)
+# Install Smithery Playwright MCP Server
 # Provides browser automation via MCP protocol
-echo "🎭 Installing Playwright MCP Server..."
-npm install -g @playwright/mcp
+echo "🎭 Installing Smithery Playwright MCP Server..."
+npm install -g @smithery/playwright
 
 # Install Chrome DevTools MCP Server
 # Provides Chrome debugging capabilities via MCP
 echo "🌐 Installing Chrome DevTools MCP Server..."
 npm install -g chrome-devtools-mcp
-
-# Install Browser MCP (Alternative Chrome control)
-# For direct browser automation in user's Chrome instance
-echo "🔍 Installing Browser MCP..."
-npm install -g mcp-chrome-bridge
 
 # ============================================
 # REGISTER MCP SERVERS WITH CLAUDE CODE
@@ -101,16 +96,17 @@ npm install -g mcp-chrome-bridge
 
 echo "🔧 Registering MCP servers with Claude Code..."
 
-# Register Playwright MCP
-claude mcp add playwright --scope user -- npx -y @playwright/mcp@latest
-echo "✅ Registered Playwright MCP"
+# Register Smithery Playwright MCP
+claude mcp add playwright --scope user -- npx -y @smithery/playwright@latest
+echo "✅ Registered Smithery Playwright MCP"
 
 # Register Chrome DevTools MCP
 claude mcp add chrome-devtools --scope user -- npx -y chrome-devtools-mcp@latest
 echo "✅ Registered Chrome DevTools MCP"
 
-#Register Agentic QE
+# Register Agentic QE
 claude mcp add agentic-qe --scope user -- npx -y aqe-mcp
+echo "✅ Registered Agentic QE MCP"
 
 
 # ============================================
@@ -120,18 +116,18 @@ claude mcp add agentic-qe --scope user -- npx -y aqe-mcp
 echo "🔧 Adding MCP server configs to .mcp.json..."
 if [ -f "$WORKSPACE_FOLDER/.mcp.json" ]; then
     cd "$WORKSPACE_FOLDER"
-    
+
     # Remove last 2 lines (closing braces)
     sed -i.bak '$ d' .mcp.json
     sed -i '$ d' .mcp.json
-    
+
     # Append new servers
     cat << 'EOF' >> .mcp.json
     ,
     "playwright": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "@playwright/mcp@latest"],
+      "args": ["-y", "@smithery/playwright@latest"],
       "env": {}
     },
     "chrome-devtools": {
@@ -143,7 +139,7 @@ if [ -f "$WORKSPACE_FOLDER/.mcp.json" ]; then
   }
 }
 EOF
-    
+
     rm .mcp.json.bak
     echo "✅ MCP servers added to .mcp.json"
 else
@@ -169,17 +165,13 @@ cat << 'MCP_CONFIG_EOF' > "$HOME/.config/claude/mcp.json"
   "mcpServers": {
     "playwright": {
       "command": "npx",
-      "args": ["-y", "@playwright/mcp@latest"],
+      "args": ["-y", "@smithery/playwright@latest"],
       "env": {}
     },
     "chrome-devtools": {
       "command": "npx",
-      "args": ["chrome-devtools-mcp@latest"],
+      "args": ["-y", "chrome-devtools-mcp@latest"],
       "env": {}
-    },
-    "chrome-mcp": {
-      "type": "streamable-http",
-      "url": "http://127.0.0.1:12306/mcp"
     }
   }
 }
