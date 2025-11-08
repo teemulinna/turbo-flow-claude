@@ -347,6 +347,41 @@ echo 'alias dsp="claude --dangerously-skip-permissions"' >> ~/.bashrc
 echo 'alias dspc="claude -c --dangerously-skip-permissions"' >> ~/.bashrc
 
 # ============================================
+# CREATE TMUX CONFIGURATION
+# ============================================
+
+echo ""
+echo "⚙️ Creating tmux configuration..."
+
+# Create ~/.tmux.conf with optimized settings
+cat << 'TMUX_CONFIG_EOF' > ~/.tmux.conf
+# Hiirituki
+set -g mouse on
+
+# Statuspalkin väri
+set -g status-bg colour235
+set -g status-fg white
+
+# Nopeampi näppäinkomento
+set -s escape-time 0
+
+# Parempi historia
+set -g history-limit 10000
+
+# Indeksointi aloitetaan 1:stä (helpompi näppäimistölle)
+set -g base-index 1
+setw -g pane-base-index 1
+
+# Automaattinen ikkunoiden uudelleennumerointi
+set -g renumber-windows on
+
+# Aktivoi vi-näppäimet copy-moodissa
+setw -g mode-keys vi
+TMUX_CONFIG_EOF
+
+echo "✅ tmux configuration created at ~/.tmux.conf"
+
+# ============================================
 # ADD CONVENIENCE ALIASES TO ~/.zshrc
 # ============================================
 
