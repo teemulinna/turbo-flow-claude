@@ -10,6 +10,16 @@ echo "DEVPOD_WORKSPACE_FOLDER: $DEVPOD_WORKSPACE_FOLDER"
 echo "AGENTS_DIR: $AGENTS_DIR"
 echo "DEVPOD_DIR: $DEVPOD_DIR"
 
+# Install build dependencies for native npm packages
+echo "📦 Installing build dependencies..."
+sudo apt-get update && sudo apt-get install -y \
+  build-essential \
+  python3-dev \
+  python3-pip \
+  make \
+  g++ \
+  gcc
+
 # Install npm packages
 npm install -g @anthropic-ai/claude-code
 npm install -g claude-usage-cli
@@ -48,8 +58,9 @@ uv tool install claude-monitor || pip install claude-monitor
 # Install Codex
 #npm install -g @openai/codex
 
-# Install Agentic-qe
-npm install -g agentic-qe
+# Install Agentic-qe (optional - requires native compilation)
+echo "📦 Installing Agentic-qe (optional)..."
+npm install -g agentic-qe || echo "⚠️ Agentic-qe installation failed (native compilation issue) - continuing setup..."
 
 # Install Clauden Flow
 npm install -g claude-flow@alpha
@@ -104,9 +115,13 @@ echo "✅ Registered Smithery Playwright MCP"
 claude mcp add chrome-devtools --scope user -- npx -y chrome-devtools-mcp@latest
 echo "✅ Registered Chrome DevTools MCP"
 
-# Register Agentic QE
-claude mcp add agentic-qe --scope user -- npx -y aqe-mcp
-echo "✅ Registered Agentic QE MCP"
+# Register Agentic QE (optional - only if installed successfully)
+if command -v aqe-mcp >/dev/null 2>&1 || npm list -g agentic-qe >/dev/null 2>&1; then
+    claude mcp add agentic-qe --scope user -- npx -y aqe-mcp || echo "⚠️ Agentic QE MCP registration skipped"
+    echo "✅ Registered Agentic QE MCP"
+else
+    echo "⚠️ Agentic QE not installed - skipping MCP registration"
+fi
 
 
 # ============================================
