@@ -28,7 +28,7 @@ npm install -g claude-usage-cli || echo "⚠️ claude-usage-cli installation fa
 # Verify Claude Code installation
 if command -v claude >/dev/null 2>&1; then
   echo "✅ Claude Code installed successfully"
-  claude --version
+  claude --version || echo "⚠️ Claude Code found but version check failed"
 else
   echo "❌ Claude Code not found in PATH - attempting manual installation..."
   sudo npm install -g @anthropic-ai/claude-code --force || echo "⚠️ Manual installation also failed"
@@ -73,13 +73,13 @@ echo "📦 Installing Agentic-qe (optional)..."
 npm install -g agentic-qe || echo "⚠️ Agentic-qe installation failed (native compilation issue) - continuing setup..."
 
 # Install Clauden Flow
-npm install -g claude-flow@alpha
+npm install -g claude-flow@alpha || echo "⚠️ Claude Flow installation failed - continuing setup..."
 
 # Install Agentic Flow
-npm install -g agentic-flow
+npm install -g agentic-flow || echo "⚠️ Agentic Flow installation failed - continuing setup..."
 
 # Install Direnv
-curl -sfL https://direnv.net/install.sh | bash
+curl -sfL https://direnv.net/install.sh | bash || echo "⚠️ Direnv installation failed - continuing setup..."
 echo 'eval "$(direnv hook bash)"' >> ~/.bashrc
 
 # Verify installation
@@ -91,12 +91,12 @@ fi
 
 # Initialize claude-flow in the project directory
 cd "$WORKSPACE_FOLDER"
-npx claude-flow@alpha init --force
+npx claude-flow@alpha init --force || echo "⚠️ Claude Flow init failed - continuing setup..."
 
 # Setup Node.js project if package.json doesn't exist
 if [ ! -f "package.json" ]; then
   echo "📦 Initializing Node.js project..."
-  npm init -y
+  npm init -y || echo "⚠️ npm init failed - continuing setup..."
 fi
 
 echo "🔌 Installing MCP Servers..."
@@ -104,12 +104,12 @@ echo "🔌 Installing MCP Servers..."
 # Install Smithery Playwright MCP Server
 # Provides browser automation via MCP protocol
 echo "🎭 Installing Smithery Playwright MCP Server..."
-npm install -g @smithery/playwright
+npm install -g @smithery/playwright || echo "⚠️ Smithery Playwright installation failed - continuing setup..."
 
 # Install Chrome DevTools MCP Server
 # Provides Chrome debugging capabilities via MCP
 echo "🌐 Installing Chrome DevTools MCP Server..."
-npm install -g chrome-devtools-mcp
+npm install -g chrome-devtools-mcp || echo "⚠️ Chrome DevTools MCP installation failed - continuing setup..."
 
 # ============================================
 # REGISTER MCP SERVERS WITH CLAUDE CODE
@@ -213,7 +213,7 @@ echo "✅ MCP configuration created at ~/.config/claude/mcp.json"
 
 # Install TypeScript and build tools (needed for proper development)
 echo "🔧 Installing TypeScript and development tools..."
-npm install -D typescript @types/node
+npm install -D typescript @types/node || echo "⚠️ TypeScript installation failed - continuing setup..."
 
 # Update tsconfig.json for ES modules
 echo "⚙️ Updating TypeScript configuration for ES modules..."
@@ -294,9 +294,12 @@ fi
 echo "Installing Claude subagents..."
 mkdir -p "$AGENTS_DIR"
 cd "$AGENTS_DIR"
-git clone https://github.com/ChrisRoyse/610ClaudeSubagents.git temp-agents
-cp -r temp-agents/agents/*.md .
-rm -rf temp-agents
+if git clone https://github.com/ChrisRoyse/610ClaudeSubagents.git temp-agents; then
+  cp -r temp-agents/agents/*.md . || echo "⚠️ Failed to copy agent files"
+  rm -rf temp-agents
+else
+  echo "⚠️ Failed to clone 610ClaudeSubagents repository - continuing setup..."
+fi
 
 # Copy additional agents if they're included in the repo
 ADDITIONAL_AGENTS_DIR="$DEVPOD_DIR/additional-agents"
@@ -377,7 +380,7 @@ echo "✅ Convenience aliases added to ~/.zshrc"
 
 # Install Agentic Flow globally
 echo "📦 Installing Agentic Flow..."
-npm install -g agentic-flow
+npm install -g agentic-flow || echo "⚠️ Agentic Flow installation failed - continuing setup..."
 
 # Verify installation
 if command -v agentic-flow >/dev/null 2>&1; then
@@ -1155,7 +1158,7 @@ af-quic-custom() {
 ALIASES_EOF
 
 # Source the updated bashrc
-source ~/.bashrc
+source ~/.bashrc || echo "⚠️ Failed to source ~/.bashrc - you may need to restart your shell"
 
 echo ""
 echo "============================================"
