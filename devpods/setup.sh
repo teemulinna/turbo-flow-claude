@@ -79,7 +79,7 @@ echo "📦 Installing Agentic-qe (optional)..."
 npm install -g agentic-qe || echo "⚠️ Agentic-qe installation failed (native compilation issue) - continuing setup..."
 
 # Install Claude Flow (latest version to reduce deprecated dependencies)
-npm install -g claude-flow@latest || echo "⚠️ Claude Flow installation failed - continuing setup..."
+npm install -g claude-flow@alpha || echo "⚠️ Claude Flow installation failed - continuing setup..."
 
 # Install Agentic Flow
 npm install -g agentic-flow || echo "⚠️ Agentic Flow installation failed - continuing setup..."
