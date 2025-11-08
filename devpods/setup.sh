@@ -104,12 +104,12 @@ echo "🔌 Installing MCP Servers..."
 # Install Smithery Playwright MCP Server
 # Provides browser automation via MCP protocol
 echo "🎭 Installing Smithery Playwright MCP Server..."
-npm install -g @smithery/playwright || echo "⚠️ Smithery Playwright installation failed - continuing setup..."
+npm install -g @smithery/playwright --loglevel=error || echo "⚠️ Smithery Playwright installation failed - continuing setup..."
 
 # Install Chrome DevTools MCP Server
 # Provides Chrome debugging capabilities via MCP
 echo "🌐 Installing Chrome DevTools MCP Server..."
-npm install -g chrome-devtools-mcp || echo "⚠️ Chrome DevTools MCP installation failed - continuing setup..."
+npm install -g chrome-devtools-mcp --loglevel=error || echo "⚠️ Chrome DevTools MCP installation failed - continuing setup..."
 
 # ============================================
 # REGISTER MCP SERVERS WITH CLAUDE CODE
