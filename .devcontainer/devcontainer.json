@@ -23,7 +23,8 @@
 				"shd101wyy.markdown-preview-enhanced",
                 "vsls-contrib.gistfs",
                 "github.copilot",
-                "github.copilot-chat"
+                "github.copilot-chat",
+                "anthropic.claude-code"
             ],
             "settings": {
                 "terminal.integrated.cwd": "${containerWorkspaceFolder}",
