@@ -14,7 +14,7 @@ echo "Installing core dependencies (git, curl, tmux, htop, python, direnv, build
 if command -v apt-get &> /dev/null; then
     echo "Detected Debian/Ubuntu-based system. Using apt-get."
     sudo apt-get update
-    sudo apt-get install -y git curl tmux htop python3 python3-pip direnv build-essential
+    sudo apt-get install -y git curl tmux htop python3 python3-pip direnv build-essential gh git
 elif command -v dnf &> /dev/null; then
     echo "Detected Fedora-based system. Using dnf."
     sudo dnf install -y git curl tmux htop python3 python3-pip direnv @development-tools
