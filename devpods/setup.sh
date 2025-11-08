@@ -72,8 +72,8 @@ uv tool install claude-monitor || pip install claude-monitor
 echo "📦 Installing Agentic-qe (optional)..."
 npm install -g agentic-qe || echo "⚠️ Agentic-qe installation failed (native compilation issue) - continuing setup..."
 
-# Install Clauden Flow
-npm install -g claude-flow@alpha || echo "⚠️ Claude Flow installation failed - continuing setup..."
+# Install Claude Flow (latest version to reduce deprecated dependencies)
+npm install -g claude-flow@latest || echo "⚠️ Claude Flow installation failed - continuing setup..."
 
 # Install Agentic Flow
 npm install -g agentic-flow || echo "⚠️ Agentic Flow installation failed - continuing setup..."
@@ -101,15 +101,13 @@ fi
 
 echo "🔌 Installing MCP Servers..."
 
-# Install Smithery Playwright MCP Server
-# Provides browser automation via MCP protocol
-echo "🎭 Installing Smithery Playwright MCP Server..."
-npm install -g @smithery/playwright --loglevel=error || echo "⚠️ Smithery Playwright installation failed - continuing setup..."
+# Note: @smithery/playwright doesn't exist in npm registry - removed
+# If you need Playwright MCP, use official playwright package
 
 # Install Chrome DevTools MCP Server
 # Provides Chrome debugging capabilities via MCP
 echo "🌐 Installing Chrome DevTools MCP Server..."
-npm install -g chrome-devtools-mcp --loglevel=error || echo "⚠️ Chrome DevTools MCP installation failed - continuing setup..."
+npm install -g chrome-devtools-mcp || echo "⚠️ Chrome DevTools MCP installation failed - continuing setup..."
 
 # ============================================
 # REGISTER MCP SERVERS WITH CLAUDE CODE
@@ -117,12 +115,11 @@ npm install -g chrome-devtools-mcp --loglevel=error || echo "⚠️ Chrome DevTo
 
 echo "🔧 Registering MCP servers with Claude Code..."
 
-# Register Smithery Playwright MCP
-claude mcp add playwright --scope user -- npx -y @smithery/playwright@latest
-echo "✅ Registered Smithery Playwright MCP"
+# Note: @smithery/playwright doesn't exist - removed
+# If you need Playwright MCP, install official playwright and configure manually
 
 # Register Chrome DevTools MCP
-claude mcp add chrome-devtools --scope user -- npx -y chrome-devtools-mcp@latest
+claude mcp add chrome-devtools --scope user -- npx -y chrome-devtools-mcp@latest || echo "⚠️ Chrome DevTools MCP registration failed - continuing..."
 echo "✅ Registered Chrome DevTools MCP"
 
 # Register Agentic QE (optional - only if installed successfully)
@@ -149,12 +146,6 @@ if [ -f "$WORKSPACE_FOLDER/.mcp.json" ]; then
     # Append new servers
     cat << 'EOF' >> .mcp.json
     ,
-    "playwright": {
-      "type": "stdio",
-      "command": "npx",
-      "args": ["-y", "@smithery/playwright@latest"],
-      "env": {}
-    },
     "chrome-devtools": {
       "type": "stdio",
       "command": "npx",
@@ -188,11 +179,6 @@ mkdir -p "$HOME/.config/claude"
 cat << 'MCP_CONFIG_EOF' > "$HOME/.config/claude/mcp.json"
 {
   "mcpServers": {
-    "playwright": {
-      "command": "npx",
-      "args": ["-y", "@smithery/playwright@latest"],
-      "env": {}
-    },
     "chrome-devtools": {
       "command": "npx",
       "args": ["-y", "chrome-devtools-mcp@latest"],
