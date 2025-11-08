@@ -21,8 +21,18 @@ sudo apt-get update && sudo apt-get install -y \
   gcc
 
 # Install npm packages
-npm install -g @anthropic-ai/claude-code
-npm install -g claude-usage-cli
+echo "📦 Installing Claude Code and usage CLI..."
+npm install -g @anthropic-ai/claude-code || sudo npm install -g @anthropic-ai/claude-code || echo "⚠️ Claude Code installation failed - you may need to install manually"
+npm install -g claude-usage-cli || echo "⚠️ claude-usage-cli installation failed - continuing..."
+
+# Verify Claude Code installation
+if command -v claude >/dev/null 2>&1; then
+  echo "✅ Claude Code installed successfully"
+  claude --version
+else
+  echo "❌ Claude Code not found in PATH - attempting manual installation..."
+  sudo npm install -g @anthropic-ai/claude-code --force || echo "⚠️ Manual installation also failed"
+fi
 
 # Install uv package manager
 echo "Installing uv package manager..."
@@ -323,8 +333,9 @@ else
   echo "⚠️ CLAUDE.md not found in $DEVPOD_DIR - using default CLAUDE.md"
 fi
 
-# Create dsp alias for claude --dangerously-skip-permissions
+# Create dsp and dspc aliases for claude --dangerously-skip-permissions
 echo 'alias dsp="claude --dangerously-skip-permissions"' >> ~/.bashrc
+echo 'alias dspc="claude -c --dangerously-skip-permissions"' >> ~/.bashrc
 
 # ============================================
 # ADD CONVENIENCE ALIASES TO ~/.zshrc
@@ -491,6 +502,10 @@ cat << 'ALIASES_EOF' >> ~/.bashrc
 # Performance: 100-600x speedup with SDK integration
 # ============================================
 
+# === Convenience Aliases (Shell) ===
+alias ll="ls -al"
+alias lt="ls -ltra"
+
 # === Core Context Wrapper Commands ===
 alias cf="./cf-with-context.sh"
 alias cf-swarm="./cf-with-context.sh swarm" 
@@ -499,6 +514,7 @@ alias cf-hive="./cf-with-context.sh hive-mind spawn"
 # === Claude Code Direct Access ===
 alias cf-dsp="claude --dangerously-skip-permissions"
 alias dsp="claude --dangerously-skip-permissions"
+alias dspc="claude -c --dangerously-skip-permissions"
 
 # === Initialization & Setup ===
 alias cf-init="npx claude-flow@alpha init --force"
