@@ -10,6 +10,12 @@ echo "DEVPOD_WORKSPACE_FOLDER: $DEVPOD_WORKSPACE_FOLDER"
 echo "AGENTS_DIR: $AGENTS_DIR"
 echo "DEVPOD_DIR: $DEVPOD_DIR"
 
+# Clean up deprecated node-domexception package
+echo "🧹 Removing deprecated node-domexception package..."
+npm uninstall -g node-domexception 2>/dev/null || true
+npm cache clean --force 2>/dev/null || true
+echo "✅ Cleanup complete"
+
 # Install build dependencies for native npm packages
 echo "📦 Installing build dependencies..."
 sudo apt-get update && sudo apt-get install -y \
@@ -101,8 +107,10 @@ fi
 
 echo "🔌 Installing MCP Servers..."
 
-# Note: @smithery/playwright doesn't exist in npm registry - removed
-# If you need Playwright MCP, use official playwright package
+# Install Playwright MCP Server
+# Provides browser automation via MCP protocol
+echo "🎭 Installing Playwright MCP Server..."
+npm install -g @executeautomation/playwright-mcp-server || echo "⚠️ Playwright MCP Server installation failed - continuing setup..."
 
 # Install Chrome DevTools MCP Server
 # Provides Chrome debugging capabilities via MCP
@@ -115,8 +123,9 @@ npm install -g chrome-devtools-mcp || echo "⚠️ Chrome DevTools MCP installat
 
 echo "🔧 Registering MCP servers with Claude Code..."
 
-# Note: @smithery/playwright doesn't exist - removed
-# If you need Playwright MCP, install official playwright and configure manually
+# Register Playwright MCP
+claude mcp add playwright --scope user -- npx -y @executeautomation/playwright-mcp-server@latest || echo "⚠️ Playwright MCP registration failed - continuing..."
+echo "✅ Registered Playwright MCP"
 
 # Register Chrome DevTools MCP
 claude mcp add chrome-devtools --scope user -- npx -y chrome-devtools-mcp@latest || echo "⚠️ Chrome DevTools MCP registration failed - continuing..."
@@ -146,6 +155,12 @@ if [ -f "$WORKSPACE_FOLDER/.mcp.json" ]; then
     # Append new servers
     cat << 'EOF' >> .mcp.json
     ,
+    "playwright": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@executeautomation/playwright-mcp-server@latest"],
+      "env": {}
+    },
     "chrome-devtools": {
       "type": "stdio",
       "command": "npx",
@@ -179,6 +194,11 @@ mkdir -p "$HOME/.config/claude"
 cat << 'MCP_CONFIG_EOF' > "$HOME/.config/claude/mcp.json"
 {
   "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@executeautomation/playwright-mcp-server@latest"],
+      "env": {}
+    },
     "chrome-devtools": {
       "command": "npx",
       "args": ["-y", "chrome-devtools-mcp@latest"],
