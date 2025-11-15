@@ -1,8 +1,13 @@
 #!/bin/bash
-set -ex
+set -e  # Exit on error, but not verbose
 
 # Get the directory where this script is located
 readonly DEVPOD_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Set defaults for environment variables if not set
+: "${WORKSPACE_FOLDER:=$(dirname "$DEVPOD_DIR")}"
+: "${DEVPOD_WORKSPACE_FOLDER:=$WORKSPACE_FOLDER}"
+: "${AGENTS_DIR:=$WORKSPACE_FOLDER/agents}"
 
 echo "=== Starting TMux Workspace ==="
 echo "WORKSPACE_FOLDER: $WORKSPACE_FOLDER"

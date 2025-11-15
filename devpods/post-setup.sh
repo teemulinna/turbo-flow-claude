@@ -1,8 +1,13 @@
 #!/bin/bash
-set -ex
+set -e  # Exit on error, but not verbose
 
 # Get the directory where this script is located
 readonly DEVPOD_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Set defaults for environment variables if not set
+: "${WORKSPACE_FOLDER:=$(dirname "$DEVPOD_DIR")}"
+: "${DEVPOD_WORKSPACE_FOLDER:=$WORKSPACE_FOLDER}"
+: "${AGENTS_DIR:=$WORKSPACE_FOLDER/agents}"
 
 echo "=== Claude Dev Post-Setup ==="
 echo "WORKSPACE_FOLDER: $WORKSPACE_FOLDER"
@@ -29,10 +34,10 @@ fi
 
 # Check agents directory
 if [ -d "$AGENTS_DIR" ] && [ "$(ls -A $AGENTS_DIR 2>/dev/null)" ]; then
-    agent_count=$(ls -1 $AGENTS_DIR/*.md 2>/dev/null | wc -l)
+    agent_count=$(ls -1 $AGENTS_DIR/*.md 2>/dev/null | wc -l || echo "0")
     echo "✅ Found $agent_count agents in $AGENTS_DIR"
 else
-    echo "⚠️ Agents directory empty or missing"
+    echo "⚠️ Agents directory empty or missing: $AGENTS_DIR"
 fi
 
 # Check claude.md configuration
